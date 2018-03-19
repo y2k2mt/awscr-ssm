@@ -1,5 +1,5 @@
-# awscr-ssm
-=============
+awscr-ssm
+----
 
 A Crystal shard for AWS System Manager.
 
