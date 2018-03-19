@@ -1,0 +1,12 @@
+# Created by .ignore support plugin (hsz.mobi)
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# shards
+bin/
+.shards
+lib/
+*.html

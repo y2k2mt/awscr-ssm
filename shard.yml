@@ -1,0 +1,15 @@
+name: awscr-ssm
+version: 0.1.0
+
+authors:
+  - y2k2mt <y2.k2mt@gmail.com>
+
+description: |
+  A Crystal shard for AWS System Manager
+
+# license: MIT
+
+dependencies:
+  awscr-signer:
+    github: taylorfinnell/awscr-signer
+    version: 0.5.0
