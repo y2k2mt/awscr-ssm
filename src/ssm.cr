@@ -39,11 +39,23 @@ module Awscr
 
   module SSM
     class Client
-	    def initialize(@region : String, @credential : Credentials = EnvCredentials.new)
+      def initialize(@region : String, @credential : Credentials = EnvCredentials.new)
       end
 
       def get_parameter(key : String, with_decription : Bool = false)
         GetParameterResponse.new(SSMApi.new(@region, @credential).request(GetParameterRequest.new(key, with_decription))).extract
+      end
+
+      def put_parameter(
+        key : String,
+        value : String,
+        secure : Bool = false,
+        description : String = "",
+        allowed_pattern : String = "",
+        key_id : String = "",
+        overwrite : Bool = true
+      )
+        PutParameterResponse.new(SSMApi.new(@region, @credential).request(PutParameterRequest.new(key, value, secure, description, allowed_pattern, key_id, overwrite))).extract
       end
     end
 
@@ -70,6 +82,36 @@ module Awscr
       end
     end
 
+    class PutParameterRequest
+      include Request
+
+      def initialize(
+        @key : String,
+        @value : String,
+        @secure : Bool,
+        @description : String,
+        @allowed_pattern : String,
+        @key_id : String,
+        @overwrite : Bool
+      )
+      end
+
+      def method : String
+        "POST"
+      end
+
+      def to_parameters : Hash(String, String)
+        h = {"Action" => "PutParameter", "Name" => @key, "Value" => @value, "Type" => "String", "Overwrite" => @overwrite, "AllowedPattern" => @allowed_pattern, "Description" => @description}
+        if @secure
+          h["Type"] = "SecureString"
+        end
+        if @key_id.length > 0
+          h["KeyId"] = @key_id
+        end
+        h
+      end
+    end
+
     module Response(T)
       abstract def extract : T
     end
@@ -83,6 +125,18 @@ module Awscr
       def extract : String
         xml = XML.new(@response.body)
         xml.string("//GetParameterResult/Parameter/Value")
+      end
+    end
+
+    class PutParameterResponse
+      include Response(String)
+
+      def initialize(@response : HTTP::Client::Response)
+      end
+
+      def extract : Int32
+        xml = XML.new(@response.body)
+        xml.i32("//PutParameterResult/Parameter/Version")
       end
     end
 
