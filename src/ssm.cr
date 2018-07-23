@@ -101,11 +101,11 @@ module Awscr
       end
 
       def to_parameters : Hash(String, String)
-        h = {"Action" => "PutParameter", "Name" => @key, "Value" => @value, "Type" => "String", "Overwrite" => @overwrite, "AllowedPattern" => @allowed_pattern, "Description" => @description}
+	      h = {"Action" => "PutParameter", "Name" => @key, "Value" => @value, "Type" => "String", "Overwrite" => @overwrite.to_s, "AllowedPattern" => @allowed_pattern, "Description" => @description}
         if @secure
           h["Type"] = "SecureString"
         end
-        if @key_id.length > 0
+	if ! @key_id.empty?
           h["KeyId"] = @key_id
         end
         h
@@ -136,7 +136,7 @@ module Awscr
 
       def extract : Int32
         xml = XML.new(@response.body)
-        xml.i32("//PutParameterResult/Parameter/Version")
+	xml.string("//PutParameterResult/Version").to_i
       end
     end
 
