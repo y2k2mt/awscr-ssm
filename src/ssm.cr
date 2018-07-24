@@ -49,13 +49,13 @@ module Awscr
       def put_parameter(
         key : String,
         value : String,
-        secure : Bool = false,
+        encrypt : Bool = false,
         description : String = "",
         allowed_pattern : String = "",
         key_id : String = "",
         overwrite : Bool = true
       )
-        PutParameterResponse.new(SSMApi.new(@region, @credential).request(PutParameterRequest.new(key, value, secure, description, allowed_pattern, key_id, overwrite))).extract
+        PutParameterResponse.new(SSMApi.new(@region, @credential).request(PutParameterRequest.new(key, value, encrypt, description, allowed_pattern, key_id, overwrite))).extract
       end
     end
 
@@ -88,7 +88,7 @@ module Awscr
       def initialize(
         @key : String,
         @value : String,
-        @secure : Bool,
+        @encrypt : Bool,
         @description : String,
         @allowed_pattern : String,
         @key_id : String,
@@ -102,7 +102,7 @@ module Awscr
 
       def to_parameters : Hash(String, String)
 	      h = {"Action" => "PutParameter", "Name" => @key, "Value" => @value, "Type" => "String", "Overwrite" => @overwrite.to_s, "AllowedPattern" => @allowed_pattern, "Description" => @description}
-        if @secure
+        if @encrypt
           h["Type"] = "SecureString"
         end
 	if ! @key_id.empty?
