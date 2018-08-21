@@ -1,5 +1,5 @@
 require "spec"
-require "../ssm"
+require "../awscr-ssm"
 
 describe Awscr::SSM do
   it "Plain text parameter" do
