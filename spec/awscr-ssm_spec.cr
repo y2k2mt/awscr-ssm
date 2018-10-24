@@ -7,4 +7,9 @@ describe Awscr::SSM do
     actual = Awscr::SSM::Client.new("ap-northeast-1").get_parameter("foo")
     actual.should eq("bar")
   end
+  it "Secure string parameter" do
+    version = Awscr::SSM::Client.new("ap-northeast-1").put_parameter("foo", "bar",true)
+    actual = Awscr::SSM::Client.new("ap-northeast-1").get_parameter("foo",true)
+    actual.should eq("bar")
+  end
 end
