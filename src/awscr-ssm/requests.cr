@@ -27,6 +27,35 @@ module Awscr
       end
     end
 
+    class GetParametersByPathRequest
+      include Request
+
+      def initialize(
+        @path : String,
+        @max_results : Int32 = 10,
+        @next_token : (String | Nil) = nil,
+        @recursive : Bool = true,
+        @with_decription : Bool = true
+      )
+      end
+
+      def method : String
+        "POST"
+      end
+
+      def to_parameters : Hash(String, String)
+        h = {
+          "Action"         => "GetParametersByPath",
+          "Path"           => @path,
+          "MaxResults"     => @max_results.to_s,
+          "Recursive"      => @recursive.to_s,
+          "WithDecryption" => @with_decription.to_s,
+        }
+        @next_token.try { |n| h["NextToken"] = n }
+        h
+      end
+    end
+
     class DeleteParameterRequest
       include Request
 
