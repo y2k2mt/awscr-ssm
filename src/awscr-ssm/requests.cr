@@ -27,6 +27,26 @@ module Awscr
       end
     end
 
+    class DeleteParameterRequest
+      include Request
+
+      def initialize(
+        @key : String,
+      )
+      end
+
+      def method : String
+        "POST"
+      end
+
+      def to_parameters : Hash(String, String)
+        {
+          "Action"         => "DeleteParameter",
+          "Name"           => @key,
+        }
+      end
+    end
+
     class PutParameterRequest
       include Request
 

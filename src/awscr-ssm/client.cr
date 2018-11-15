@@ -2,12 +2,21 @@ module Awscr
   module SSM
     class Client
       def initialize(@region : String, @credential : Credentials = EnvCredentials.new)
+          @api = Api.new(@region, @credential)
       end
 
       def get_parameter(key : String, with_decription : Bool = false)
         GetParameterResponse.new(
-          Api.new(@region, @credential).request(
+          @api.request(
             GetParameterRequest.new(key, with_decription)
+          )
+        ).extract
+      end
+
+      def delete_parameter(key : String)
+        DeleteParameterResponse.new(
+          @api.request(
+            DeleteParameterRequest.new(key)
           )
         ).extract
       end
@@ -22,7 +31,7 @@ module Awscr
         overwrite : Bool = true
       )
         PutParameterResponse.new(
-          Api.new(@region, @credential).request(
+          @api.request(
             PutParameterRequest.new(key, value, secure, description, allowed_pattern, key_id, overwrite)
           )
         ).extract

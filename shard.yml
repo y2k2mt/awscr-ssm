@@ -4,7 +4,7 @@ version: 0.2.0
 authors:
   - y2k2mt <y2.k2mt@gmail.com>
 
-crystal: 0.25.1
+crystal: 0.26.1
 
 description: |
   A Crystal shard for AWS System Manager
@@ -14,4 +14,4 @@ icense: MIT
 dependencies:
   awscr-signer:
     github: taylorfinnell/awscr-signer
-    version: 0.5.0
+    version: 0.5.2

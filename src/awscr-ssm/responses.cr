@@ -16,8 +16,18 @@ module Awscr
       end
     end
 
+    class DeleteParameterResponse
+      include Response(Void)
+
+      def initialize(@response : HTTP::Client::Response)
+      end
+
+      def extract
+      end
+    end
+
     class PutParameterResponse
-      include Response(String)
+      include Response(Int32)
 
       def initialize(@response : HTTP::Client::Response)
       end

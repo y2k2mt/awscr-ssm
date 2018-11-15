@@ -20,10 +20,9 @@ module Awscr
       end
 
       def request(r : Request)
-        r.to_parameters
         case r.method
         when "POST"
-          client.post(path: "/", form: r.to_parameters)
+            client.post(path: "/", form: r.to_parameters)
         else
           HTTP::Client::Response.new(415)
         end
