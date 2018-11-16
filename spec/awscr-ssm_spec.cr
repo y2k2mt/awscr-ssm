@@ -21,4 +21,19 @@ describe Awscr::SSM do
     actual = cli.get_parameter("foo",true)
     actual.should eq("")
   end
+
+  it "List string parameters" do
+    cli.put_parameter("/foo/bar", "hoge",true)
+    cli.put_parameter("/foo/baz", "fuga",true)
+    actual = cli.get_parameters_by_path("/foo")
+    actual[0].value.should eq("hoge")
+    actual[1].value.should eq("fuga")
+    actual = cli.get_parameters_by_path("/bar")
+    actual.empty?.should eq(true)
+  end
+
+  cli.delete_parameter("foo")
+  cli.delete_parameter("/foo/bar")
+  cli.delete_parameter("/foo/baz")
+
 end

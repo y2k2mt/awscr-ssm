@@ -13,7 +13,7 @@ module Awscr
         end
 
         def array(query)
-          @node.xpath(build_path(query), namespaces).as(::XML::NodeSet).each do |node|
+          @node.xpath(build_path(query), namespaces).as(::XML::NodeSet).map do |node|
             yield NamespacedNode.new(node)
           end
         end
