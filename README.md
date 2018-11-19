@@ -13,6 +13,10 @@ dependencies:
     github: y2k2mt/awscr-ssm
 ```
 
+## Supported crystal version
+
+0.25+
+
 ## QuickStart
 
 ```crystal

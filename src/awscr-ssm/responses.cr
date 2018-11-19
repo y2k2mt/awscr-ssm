@@ -19,23 +19,26 @@ module Awscr
     end
 
     class GetParametersByPathResponse
-      include Response(Array(Awscr::SSM::Parameter))
+      include Response(Awscr::SSM::ParameterResult)
 
       def initialize(@response : HTTP::Client::Response)
       end
 
-      def extract : Array(Awscr::SSM::Parameter)
+      def extract : Awscr::SSM::ParameterResult
         xml = XML.new(@response.body)
-        xml.array("//GetParametersByPathResponse/GetParametersByPathResult/Parameters/member") do |node|
-          Awscr::SSM::Parameter.new(
-            arn: node.string("ARN"),
-            last_modified_date: Time.parse_rfc3339(node.string("LastModifiedDate")),
-            value: node.string("Value"),
-            version: node.string("Version").to_i64,
-            name: node.string("Name"),
-            type: node.string("Type")
-          )
-        end
+        {
+          parameters: xml.array("//GetParametersByPathResponse/GetParametersByPathResult/Parameters/member") do |node|
+            Awscr::SSM::Parameter.new(
+              arn: node.string("ARN"),
+              last_modified_date: Time.parse_rfc3339(node.string("LastModifiedDate")),
+              value: node.string("Value"),
+              version: node.string("Version").to_i64,
+              name: node.string("Name"),
+              type: node.string("Type")
+            )
+          end,
+          next_token: xml.string("//GetParametersByPathResponse/GetParametersByPathResult/NextToken"),
+        }
       end
     end
 

@@ -26,10 +26,11 @@ describe Awscr::SSM do
     cli.put_parameter("/foo/bar", "hoge",true)
     cli.put_parameter("/foo/baz", "fuga",true)
     actual = cli.get_parameters_by_path("/foo")
-    actual[0].value.should eq("hoge")
-    actual[1].value.should eq("fuga")
+    actual[:parameters][0].value.should eq("hoge")
+    actual[:parameters][1].value.should eq("fuga")
     actual = cli.get_parameters_by_path("/bar")
-    actual.empty?.should eq(true)
+    actual[:parameters].empty?.should eq(true)
+    actual[:next_token].empty?.should eq(true)
   end
 
   cli.delete_parameter("foo")

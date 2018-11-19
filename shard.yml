@@ -4,8 +4,6 @@ version: 0.2.0
 authors:
   - y2k2mt <y2.k2mt@gmail.com>
 
-crystal: 0.26.1
-
 description: |
   A Crystal shard for AWS System Manager
 

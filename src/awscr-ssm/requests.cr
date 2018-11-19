@@ -60,7 +60,7 @@ module Awscr
       include Request
 
       def initialize(
-        @key : String,
+        @key : String
       )
       end
 
@@ -70,8 +70,8 @@ module Awscr
 
       def to_parameters : Hash(String, String)
         {
-          "Action"         => "DeleteParameter",
-          "Name"           => @key,
+          "Action" => "DeleteParameter",
+          "Name"   => @key,
         }
       end
     end
