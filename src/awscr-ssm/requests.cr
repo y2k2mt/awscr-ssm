@@ -56,6 +56,33 @@ module Awscr
       end
     end
 
+    class GetParameterHistoryRequest
+      include Request
+
+      def initialize(
+        @name : String,
+        @max_results : Int32 = 10,
+        @next_token : (String | Nil) = nil,
+        @with_decription : Bool = true
+      )
+      end
+
+      def method : String
+        "POST"
+      end
+
+      def to_parameters : Hash(String, String)
+        h = {
+          "Action"         => "GetParameterHistory",
+          "Name"           => @name,
+          "MaxResults"     => @max_results.to_s,
+          "WithDecryption" => @with_decription.to_s,
+        }
+        @next_token.try { |n| h["NextToken"] = n }
+        h
+      end
+    end
+
     class DeleteParameterRequest
       include Request
 
