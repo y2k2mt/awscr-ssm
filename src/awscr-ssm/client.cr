@@ -13,7 +13,13 @@ module Awscr
         ).extract
       end
 
-      def get_parameters_by_path(path : String, max_results : Int32 = 10, next_token : (String | Nil) = nil, recursive : Bool = true, with_decription : Bool = true)
+      def get_parameters_by_path(
+        path : String,
+        max_results : Int32 = 10,
+        next_token : (String | Nil) = nil,
+        recursive : Bool = true,
+        with_decription : Bool = true
+      )
         GetParametersByPathResponse.new(
           @api.request(
             GetParametersByPathRequest.new(
@@ -21,6 +27,24 @@ module Awscr
               max_results: max_results,
               next_token: next_token,
               recursive: recursive,
+              with_decription: with_decription
+            )
+          )
+        ).extract
+      end
+
+      def get_parameter_history(
+        name : String,
+        max_results : Int32 = 10,
+        next_token : (String | Nil) = nil,
+        with_decription : Bool = true
+      )
+        GetParameterHistoryResponse.new(
+          @api.request(
+            GetParameterHistoryRequest.new(
+              name: name,
+              max_results: max_results,
+              next_token: next_token,
               with_decription: with_decription
             )
           )

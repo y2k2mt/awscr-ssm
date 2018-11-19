@@ -42,6 +42,34 @@ module Awscr
       end
     end
 
+    class GetParameterHistoryResponse
+      include Response(Awscr::SSM::ParameterHistoryResult)
+
+      def initialize(@response : HTTP::Client::Response)
+      end
+
+      def extract : Awscr::SSM::ParameterHistoryResult
+        xml = XML.new(@response.body)
+        {
+          parameters: xml.array("//GetParameterHistoryResponse/GetParameterHistoryResult/Parameters/member") do |node|
+            Awscr::SSM::ParameterHistory.new(
+              allowed_pattern: node.string("AllowedPattern"),
+              description: node.string("Description"),
+              key_id: node.string("KeyId"),
+              labels: node.string("Labels"),
+              last_modified_date: Time.parse_rfc3339(node.string("LastModifiedDate")),
+              last_modified_user: node.string("LastModifiedUser"),
+              name: node.string("Name"),
+              type: node.string("Type"),
+              value: node.string("Value"),
+              version: node.string("Version").to_i64,
+            )
+          end,
+          next_token: xml.string("//GetParameterHistoryResponse/GetParameterHistoryResult/NextToken"),
+        }
+      end
+    end
+
     class DeleteParameterResponse
       include Response(Void)
 
