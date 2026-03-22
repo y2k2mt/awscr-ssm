@@ -12,7 +12,7 @@ module Awscr
           @node.xpath("string(#{build_path(name)})", namespaces).as(String)
         end
 
-        def array(query)
+        def array(query, &)
           @node.xpath(build_path(query), namespaces).as(::XML::NodeSet).map do |node|
             yield NamespacedNode.new(node)
           end

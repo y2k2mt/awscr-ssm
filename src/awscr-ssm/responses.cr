@@ -31,15 +31,15 @@ module Awscr
         {
           parameters: data["Parameters"].as_a.map do |p|
             Awscr::SSM::Parameter.new(
-              arn:                p["ARN"]?.try(&.as_s?),
+              arn: p["ARN"]?.try(&.as_s?),
               last_modified_date: p["LastModifiedDate"]?.try { |d| Time.unix(d.as_f.to_i64) },
-              name:               p["Name"].as_s,
-              type:               p["Type"].as_s,
-              value:              p["Value"].as_s,
-              version:            p["Version"].as_i64
+              name: p["Name"].as_s,
+              type: p["Type"].as_s,
+              value: p["Value"].as_s,
+              version: p["Version"].as_i64
             )
           end,
-          next_token: data["NextToken"]?.try(&.as_s?)
+          next_token: data["NextToken"]?.try(&.as_s?),
         }
       end
     end
@@ -56,19 +56,19 @@ module Awscr
         {
           parameters: data["Parameters"].as_a.map do |p|
             Awscr::SSM::ParameterHistory.new(
-              allowed_pattern:    p["AllowedPattern"]?.try(&.as_s?),
-              description:        p["Description"]?.try(&.as_s?),
-              key_id:             p["KeyId"]?.try(&.as_s?),
-              labels:             p["Labels"]?.try(&.as_s?),
+              allowed_pattern: p["AllowedPattern"]?.try(&.as_s?),
+              description: p["Description"]?.try(&.as_s?),
+              key_id: p["KeyId"]?.try(&.as_s?),
+              labels: p["Labels"]?.try(&.as_s?),
               last_modified_date: p["LastModifiedDate"]?.try { |d| Time.unix(d.as_f.to_i64) },
               last_modified_user: p["LastModifiedUser"]?.try(&.as_s?),
-              name:               p["Name"].as_s,
-              type:               p["Type"].as_s,
-              value:              p["Value"].as_s,
-              version:            p["Version"].as_i64
+              name: p["Name"].as_s,
+              type: p["Type"].as_s,
+              value: p["Value"].as_s,
+              version: p["Version"].as_i64
             )
           end,
-          next_token: data["NextToken"]?.try(&.as_s?)
+          next_token: data["NextToken"]?.try(&.as_s?),
         }
       end
     end
