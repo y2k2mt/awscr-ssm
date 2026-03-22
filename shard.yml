@@ -1,5 +1,5 @@
 name: awscr-ssm
-version: 0.2.0
+version: 0.3.0
 
 authors:
   - y2k2mt <y2.k2mt@gmail.com>
@@ -10,6 +10,7 @@ description: |
 dependencies:
   awscr-signer:
     github: taylorfinnell/awscr-signer
+    version: 0.9.0
 
 development_dependencies:
   ameba:
