@@ -5,6 +5,10 @@ module Awscr
         @api = Api.new(@region, @credential)
       end
 
+      def initialize(@region : String, url : String, @credential : Credentials = Awscr::SSM.default_credentials)
+        @api = Api.new(@region, @credential, url)
+      end
+
       def get_parameter(key : String, with_decryption : Bool = false) : String
         GetParameterResponse.new(
           @api.request(GetParameterRequest.new(key, with_decryption))

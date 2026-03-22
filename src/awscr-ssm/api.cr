@@ -5,10 +5,14 @@ module Awscr
   module SSM
     class Api
       def initialize(@region : String, @credential : Credentials)
+        initialize(region,credential,"https://ssm.#{region}.amazonaws.com")
+      end
+
+      def initialize(@region : String, @credential : Credentials, @internal_uri : String)
       end
 
       def uri
-        URI.parse("https://ssm.#{@region}.amazonaws.com")
+        URI.parse(@internal_uri)
       end
 
       def client
