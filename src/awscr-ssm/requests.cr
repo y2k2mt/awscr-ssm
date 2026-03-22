@@ -28,7 +28,7 @@ module Awscr
         @max_results : Int32 = 10,
         @next_token : String? = nil,
         @recursive : Bool = true,
-        @with_decryption : Bool = true
+        @with_decryption : Bool = true,
       )
       end
 
@@ -60,7 +60,7 @@ module Awscr
         @name : String,
         @max_results : Int32 = 10,
         @next_token : String? = nil,
-        @with_decryption : Bool = true
+        @with_decryption : Bool = true,
       )
       end
 
@@ -103,7 +103,7 @@ module Awscr
         @description : String,
         @allowed_pattern : String,
         @key_id : String,
-        @overwrite : Bool
+        @overwrite : Bool,
       )
       end
 

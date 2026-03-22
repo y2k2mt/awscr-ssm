@@ -1,12 +1,12 @@
 module Awscr
   module SSM
     class Client
-      def initialize(@region : String, @credential : Credentials = Awscr::SSM.default_credentials)
+      def initialize(@region : String, @credential_provider : Aws::Credentials::Providers = Awscr::SSM::Credentials.default_provider)
         @api = Api.new(@region, @credential)
       end
 
-      def initialize(@region : String, url : String, @credential : Credentials = Awscr::SSM.default_credentials)
-        @api = Api.new(@region, @credential, url)
+      def initialize(@region : String, url : String, @credential_provider : Aws::Credentials::Providers = Awscr::SSM::Credentials.default_provider)
+        @api = Api.new(@region, @credential_provider, url)
       end
 
       def get_parameter(key : String, with_decryption : Bool = false) : String
@@ -20,7 +20,7 @@ module Awscr
         max_results : Int32 = 10,
         next_token : String? = nil,
         recursive : Bool = true,
-        with_decryption : Bool = true
+        with_decryption : Bool = true,
       ) : ParameterResult
         GetParametersByPathResponse.new(
           @api.request(
@@ -39,7 +39,7 @@ module Awscr
         name : String,
         max_results : Int32 = 10,
         next_token : String? = nil,
-        with_decryption : Bool = true
+        with_decryption : Bool = true,
       ) : ParameterHistoryResult
         GetParameterHistoryResponse.new(
           @api.request(
@@ -66,7 +66,7 @@ module Awscr
         description : String = "",
         allowed_pattern : String = "",
         key_id : String = "",
-        overwrite : Bool = true
+        overwrite : Bool = true,
       ) : Int32
         PutParameterResponse.new(
           @api.request(
