@@ -11,6 +11,9 @@ dependencies:
   awscr-signer:
     github: taylorfinnell/awscr-signer
     version: 0.9.0
+  aws-credentials:
+    github: y2k2mt/aws-credentials.cr
+    version: 0.7.0
 
 development_dependencies:
   ameba:
