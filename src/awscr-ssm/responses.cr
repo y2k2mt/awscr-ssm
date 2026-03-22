@@ -1,4 +1,5 @@
 require "./model"
+require "json"
 
 module Awscr
   module SSM
@@ -13,8 +14,8 @@ module Awscr
       end
 
       def extract : String
-        xml = XML.new(@response.body)
-        xml.string("//GetParameterResult/Parameter/Value")
+        raise "SSM error: #{@response.body}" unless @response.success?
+        JSON.parse(@response.body)["Parameter"]["Value"].as_s
       end
     end
 
@@ -25,19 +26,20 @@ module Awscr
       end
 
       def extract : Awscr::SSM::ParameterResult
-        xml = XML.new(@response.body)
+        raise "SSM error: #{@response.body}" unless @response.success?
+        data = JSON.parse(@response.body)
         {
-          parameters: xml.array("//GetParametersByPathResponse/GetParametersByPathResult/Parameters/member") do |node|
+          parameters: data["Parameters"].as_a.map do |p|
             Awscr::SSM::Parameter.new(
-              arn: node.string("ARN"),
-              last_modified_date: Time.parse_rfc3339(node.string("LastModifiedDate")),
-              value: node.string("Value"),
-              version: node.string("Version").to_i64,
-              name: node.string("Name"),
-              type: node.string("Type")
+              arn:                p["ARN"]?.try(&.as_s?),
+              last_modified_date: p["LastModifiedDate"]?.try { |d| Time.unix(d.as_f.to_i64) },
+              name:               p["Name"].as_s,
+              type:               p["Type"].as_s,
+              value:              p["Value"].as_s,
+              version:            p["Version"].as_i64
             )
           end,
-          next_token: xml.string("//GetParametersByPathResponse/GetParametersByPathResult/NextToken"),
+          next_token: data["NextToken"]?.try(&.as_s?)
         }
       end
     end
@@ -49,23 +51,24 @@ module Awscr
       end
 
       def extract : Awscr::SSM::ParameterHistoryResult
-        xml = XML.new(@response.body)
+        raise "SSM error: #{@response.body}" unless @response.success?
+        data = JSON.parse(@response.body)
         {
-          parameters: xml.array("//GetParameterHistoryResponse/GetParameterHistoryResult/Parameters/member") do |node|
+          parameters: data["Parameters"].as_a.map do |p|
             Awscr::SSM::ParameterHistory.new(
-              allowed_pattern: node.string("AllowedPattern"),
-              description: node.string("Description"),
-              key_id: node.string("KeyId"),
-              labels: node.string("Labels"),
-              last_modified_date: Time.parse_rfc3339(node.string("LastModifiedDate")),
-              last_modified_user: node.string("LastModifiedUser"),
-              name: node.string("Name"),
-              type: node.string("Type"),
-              value: node.string("Value"),
-              version: node.string("Version").to_i64,
+              allowed_pattern:    p["AllowedPattern"]?.try(&.as_s?),
+              description:        p["Description"]?.try(&.as_s?),
+              key_id:             p["KeyId"]?.try(&.as_s?),
+              labels:             p["Labels"]?.try(&.as_s?),
+              last_modified_date: p["LastModifiedDate"]?.try { |d| Time.unix(d.as_f.to_i64) },
+              last_modified_user: p["LastModifiedUser"]?.try(&.as_s?),
+              name:               p["Name"].as_s,
+              type:               p["Type"].as_s,
+              value:              p["Value"].as_s,
+              version:            p["Version"].as_i64
             )
           end,
-          next_token: xml.string("//GetParameterHistoryResponse/GetParameterHistoryResult/NextToken"),
+          next_token: data["NextToken"]?.try(&.as_s?)
         }
       end
     end
@@ -76,7 +79,8 @@ module Awscr
       def initialize(@response : HTTP::Client::Response)
       end
 
-      def extract
+      def extract : Void
+        raise "SSM error: #{@response.body}" unless @response.success?
       end
     end
 
@@ -87,8 +91,8 @@ module Awscr
       end
 
       def extract : Int32
-        xml = XML.new(@response.body)
-        xml.string("//PutParameterResult/Version").to_i
+        raise "SSM error: #{@response.body}" unless @response.success?
+        JSON.parse(@response.body)["Version"].as_i
       end
     end
   end

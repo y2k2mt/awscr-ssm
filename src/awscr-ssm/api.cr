@@ -1,4 +1,5 @@
 require "awscr-signer"
+require "json"
 
 module Awscr
   module SSM
@@ -14,18 +15,22 @@ module Awscr
         client = HTTP::Client.new(uri)
         client.before_request do |request|
           signer = Awscr::Signer::Signers::V4.new("ssm", @region, @credential.key, @credential.secret)
+          if token = @credential.session_token
+            request.headers["X-Amz-Security-Token"] = token
+          end
           signer.sign(request)
         end
         client
       end
 
       def request(r : Request)
-        case r.method
-        when "POST"
-          client.post(path: "/", form: r.to_parameters)
-        else
-          HTTP::Client::Response.new(415)
-        end
+        client.post("/",
+          headers: HTTP::Headers{
+            "Content-Type" => "application/x-amz-json-1.1",
+            "X-Amz-Target" => "AmazonSSM.#{r.action}"
+          },
+          body: r.to_json
+        )
       end
     end
   end

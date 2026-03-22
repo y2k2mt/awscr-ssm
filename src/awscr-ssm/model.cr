@@ -1,5 +1,5 @@
 module Awscr::SSM
-  alias ParameterResult = NamedTuple(parameters: Array(Parameter), next_token: String)
+  alias ParameterResult = NamedTuple(parameters: Array(Parameter), next_token: String?)
 
   struct Parameter
     getter arn, last_modified_date, name, selector, type, value, version
@@ -16,7 +16,7 @@ module Awscr::SSM
     end
   end
 
-  alias ParameterHistoryResult = NamedTuple(parameters: Array(ParameterHistory), next_token: String)
+  alias ParameterHistoryResult = NamedTuple(parameters: Array(ParameterHistory), next_token: String?)
 
   struct ParameterHistory
     getter allowed_pattern,description,key_id,labels,last_modified_user, last_modified_date, name, type, value, version
