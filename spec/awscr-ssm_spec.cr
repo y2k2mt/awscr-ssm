@@ -2,7 +2,10 @@ require "spec"
 require "../src/awscr-ssm"
 
 describe Awscr::SSM do
-  cli = Awscr::SSM::Client.new("ap-northeast-1", "http://localhost:4566")
+  provider = Aws::Credentials::Providers.new([
+    Aws::Credentials::SimpleCredentials.new("test", "test"),
+  ] of Aws::Credentials::Provider)
+  cli = Awscr::SSM::Client.new("ap-northeast-1", "http://localhost:4566", provider)
 
   it "Plain text parameter" do
     cli.put_parameter("foo", "bar")
@@ -12,8 +15,11 @@ describe Awscr::SSM do
   end
 
   it "Plain text parameter without result" do
-    actual = cli.get_parameter("foo")
-    actual.should eq("")
+    begin
+      actual = cli.get_parameter("foo")
+    rescue e
+      e.message.should eq("SSM error: {\"__type\": \"ParameterNotFound\", \"message\": \"Parameter foo not found.\"}")
+    end
   end
 
   it "Secure string parameter" do
@@ -24,8 +30,11 @@ describe Awscr::SSM do
   end
 
   it "Secure string parameter" do
-    actual = cli.get_parameter("foo", true)
-    actual.should eq("")
+    begin
+      actual = cli.get_parameter("foo", true)
+    rescue e
+      e.message.should eq("SSM error: {\"__type\": \"ParameterNotFound\", \"message\": \"Parameter foo not found.\"}")
+    end
   end
 
   it "List string parameters" do
@@ -52,9 +61,11 @@ describe Awscr::SSM do
   end
 
   it "String parameter histories without result" do
-    actual = cli.get_parameter_history("/bar")
-    actual[:parameters].empty?.should eq(true)
-    # actual[:next_token].empty?.should eq(true)
+    begin
+      actual = cli.get_parameter_history("/bar")
+    rescue e
+      e.message.should eq("SSM error: {\"__type\": \"ParameterNotFound\", \"message\": \"Parameter /bar not found.\"}")
+    end
   end
 
   # cli.delete_parameter("foo")
