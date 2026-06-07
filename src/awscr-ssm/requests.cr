@@ -114,11 +114,11 @@ module Awscr
       def to_json : String
         String.build do |s|
           s << %({"Name":#{@key.to_json},"Value":#{@value.to_json})
-          s << %("Type":#{@secure ? "\"SecureString\"" : "\"String\""})
-          s << %("Overwrite":#{@overwrite})
-          s << %("Description":#{@description.to_json}) unless @description.empty?
-          s << %("AllowedPattern":#{@allowed_pattern.to_json}) unless @allowed_pattern.empty?
-          s << %("KeyId":#{@key_id.to_json}) unless @key_id.empty?
+          s << %(,"Type":#{@secure ? "\"SecureString\"" : "\"String\""})
+          s << %(,"Overwrite":#{@overwrite})
+          s << %(,"Description":#{@description.to_json}) unless @description.empty?
+          s << %(,"AllowedPattern":#{@allowed_pattern.to_json}) unless @allowed_pattern.empty?
+          s << %(,"KeyId":#{@key_id.to_json}) unless @key_id.empty?
           s << "}"
         end
       end
