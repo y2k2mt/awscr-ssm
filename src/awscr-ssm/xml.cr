@@ -46,7 +46,12 @@ module Awscr
 
         # :nodoc:
         private def namespaces
-          @node.root.not_nil!.namespaces
+          root = @node.root
+          if root
+            root.namespace
+          else
+            ""
+          end
         end
       end
 

@@ -16,7 +16,7 @@ describe Awscr::SSM do
 
   it "Plain text parameter without result" do
     begin
-      actual = cli.get_parameter("foo")
+      cli.get_parameter("foo")
     rescue e
       e.message.should eq("SSM error: {\"__type\": \"ParameterNotFound\", \"message\": \"Parameter foo not found.\"}")
     end
@@ -31,7 +31,7 @@ describe Awscr::SSM do
 
   it "Secure string parameter" do
     begin
-      actual = cli.get_parameter("foo", true)
+      cli.get_parameter("foo", true)
     rescue e
       e.message.should eq("SSM error: {\"__type\": \"ParameterNotFound\", \"message\": \"Parameter foo not found.\"}")
     end
@@ -62,7 +62,7 @@ describe Awscr::SSM do
 
   it "String parameter histories without result" do
     begin
-      actual = cli.get_parameter_history("/bar")
+      cli.get_parameter_history("/bar")
     rescue e
       e.message.should eq("SSM error: {\"__type\": \"ParameterNotFound\", \"message\": \"Parameter /bar not found.\"}")
     end
