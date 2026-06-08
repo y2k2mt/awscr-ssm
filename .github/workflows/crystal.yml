@@ -18,5 +18,7 @@ jobs:
       run: crystal tool format --check
     - name: Code inspection with ameba
       run: bin/ameba src
+    - name: Start docker compose
+      run: docker compose up -d
     - name: Run specs
       run: crystal spec -v
