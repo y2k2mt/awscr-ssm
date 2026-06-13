@@ -7,11 +7,10 @@ jobs:
 
     runs-on: ubuntu-24.04
 
-    container:
-      image: crystallang/crystal
-
     steps:
     - uses: actions/checkout@v1
+    - name: Install Crystal
+      uses: crystal-lang/install-crystal@v1
     - name: Install dependencies
       run: shards install --ignore-crystal-version
     - name: Code formatting
