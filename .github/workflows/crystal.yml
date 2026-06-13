@@ -7,10 +7,20 @@ jobs:
 
     runs-on: ubuntu-24.04
 
+    services:
+      localstack:
+        image: localstack/localstack
+        ports:
+          - 4566:4566
+        env:
+          SERVICES: ssm
+          DEBUG: 1
+
+    container:
+      image: crystallang/crystal
+
     steps:
     - uses: actions/checkout@v1
-    - name: Install Crystal
-      uses: crystal-lang/install-crystal@v1
     - name: Install dependencies
       run: shards install --ignore-crystal-version
     - name: Code formatting
@@ -18,11 +28,4 @@ jobs:
     - name: Code inspection with ameba
       run: bin/ameba src
     - name: Run specs
-      env:
-        DEFAULT_REGION: ap-northeast-1
-        AWS_ACCOUNT_ID: "000000000000"
-        AWS_ACCESS_KEY_ID: dummy-access-key
-        AWS_SECRET_ACCESS_KEY: dummy-secret-key
-      run: |
-        docker compose up -d
-        crystal spec -v
+      run: crystal spec -v
