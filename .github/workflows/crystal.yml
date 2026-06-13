@@ -25,5 +25,5 @@ jobs:
         AWS_ACCESS_KEY_ID: dummy-access-key
         AWS_SECRET_ACCESS_KEY: dummy-secret-key
       run: |
-        docker-compose up -d
+        docker compose up -d
         crystal spec -v
