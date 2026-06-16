@@ -27,5 +27,13 @@ jobs:
       run: crystal tool format --check
     - name: Code inspection with ameba
       run: bin/ameba src
+    - name: Start LocalStack
+      uses: LocalStack/setup-localstack@v0.3.2
+      with:
+        image-tag: 'latest'
+        install-awslocal: 'true'
+        configuration: DEBUG=1
+      env:
+        LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
     - name: Run specs
       run: crystal spec -v
