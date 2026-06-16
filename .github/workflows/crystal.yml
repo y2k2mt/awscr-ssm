@@ -5,6 +5,8 @@ on: [push]
 jobs:
   build:
 
+    runs-on: ubuntu-24.04
+
     container:
       image: crystallang/crystal
 
@@ -16,6 +18,9 @@ jobs:
       run: crystal tool format --check
     - name: Code inspection with ameba
       run: bin/ameba src
+    - uses: actions/setup-python@v6
+      with:
+        python-version: '3.13'
     - name: Start LocalStack
       uses: LocalStack/setup-localstack@v0.3.2
       with:
