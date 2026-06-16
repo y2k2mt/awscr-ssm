@@ -7,15 +7,6 @@ jobs:
 
     runs-on: ubuntu-24.04
 
-    services:
-      localstack:
-        image: localstack/localstack
-        ports:
-          - 4566:4566
-        env:
-          SERVICES: ssm
-          DEBUG: 1
-
     container:
       image: crystallang/crystal
 
