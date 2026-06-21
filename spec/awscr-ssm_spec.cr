@@ -67,9 +67,4 @@ describe Awscr::SSM do
       e.message.should eq("SSM error: {\"__type\": \"ParameterNotFound\", \"message\": \"Parameter /bar not found.\"}")
     end
   end
-
-  # cli.delete_parameter("foo")
-  # cli.delete_parameter("/foo/bar")
-  # cli.delete_parameter("/foo/baz")
-  # cli.delete_parameter("/foo/bar/baz")
 end

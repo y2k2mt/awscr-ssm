@@ -5,6 +5,8 @@ module Awscr
         Aws::Credentials::Providers.new([
           Aws::Credentials::EnvProvider.new,
           Aws::Credentials::SharedCredentialFileProvider.new,
+          Aws::Credentials::InstanceMetadataProvider.new,
+          Aws::Credentials::ContainerCredentialProvider.new,
         ] of Aws::Credentials::Provider)
       end
     end
