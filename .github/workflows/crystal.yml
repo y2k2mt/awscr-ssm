@@ -5,7 +5,7 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
 
     container:
       image: crystallang/crystal
@@ -25,8 +25,7 @@ jobs:
       uses: LocalStack/setup-localstack@v0.3.2
       with:
         image-tag: 'latest'
-        install-awslocal: 'true'
-        configuration: DEBUG=1
+        install-awslocal: true
       env:
         LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
     - name: Run specs
