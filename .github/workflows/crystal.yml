@@ -7,11 +7,10 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    container:
-      image: crystallang/crystal
-
     steps:
     - uses: actions/checkout@v1
+    - name: Setup Crystal
+      run: curl -fsSL https://crystal-lang.org/install.sh | sudo bash
     - name: Install dependencies
       run: shards install --ignore-crystal-version
     - name: Code formatting
