@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  localstack:
+    container_name: localstack
+    image: localstack/localstack:latest
+    ports:
+      - "4566:4566"
+    environment:
+      - SERVICES=ssm
+      - AWS_DEFAULT_REGION=ap-northeast-1

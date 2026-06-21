@@ -18,20 +18,18 @@ dependencies:
 
 ## Credentials
 
-Credentials are resolved automatically using the standard AWS credential chain:
-
-1. Environment variables (`AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY`)
-2. EC2 instance metadata (IMDSv2)
-
-`AWS_SESSION_TOKEN` is supported for temporary credentials (IAM roles, SSO, etc).
-
+Credentials are resolved automatically using [y2k2mt/aws-credentials.cr](https://github.com/y2k2mt/aws-credentials.cr)'s credential provider chain:
 You can also provide credentials explicitly:
 
 ```crystal
 require "awscr-ssm"
+require "aws-credentials"
 
-creds = Awscr::SSM::SimpleCredentials.new("AK...", "SECRET...")
-client = Awscr::SSM::Client.new("us-east-1", creds)
+provider = AWS::Credentials::SimpleCredentials.new(
+   access_key_id: "AK...",
+   secret_access_key: "SECRET...",
+)
+client = Awscr::SSM::Client.new("ap-northeast-1", provider)
 ```
 
 ## Quick Start
@@ -40,7 +38,7 @@ client = Awscr::SSM::Client.new("us-east-1", creds)
 require "awscr-ssm"
 
 # Credentials resolved automatically from environment or instance metadata
-client = Awscr::SSM::Client.new("us-east-1")
+client = Awscr::SSM::Client.new("ap-northeast-1")
 
 # Fetch a plain parameter
 value = client.get_parameter("/myapp/config/db_host")

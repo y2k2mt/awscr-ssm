@@ -28,7 +28,7 @@ module Awscr
         @max_results : Int32 = 10,
         @next_token : String? = nil,
         @recursive : Bool = true,
-        @with_decryption : Bool = true
+        @with_decryption : Bool = true,
       )
       end
 
@@ -44,11 +44,11 @@ module Awscr
           "WithDecryption" => @with_decryption,
         }
         token = @next_token
-        String.build do |s|
-          s << "{"
-          s << h.map { |k, v| "#{k.to_json}:#{v.to_json}" }.join(",")
-          s << ",\"NextToken\":#{token.to_json}" if token
-          s << "}"
+        String.build do |builder|
+          builder << "{"
+          builder << h.map { |k, v| "#{k.to_json}:#{v.to_json}" }.join(",")
+          builder << ",\"NextToken\":#{token.to_json}" if token
+          builder << "}"
         end
       end
     end
@@ -60,7 +60,7 @@ module Awscr
         @name : String,
         @max_results : Int32 = 10,
         @next_token : String? = nil,
-        @with_decryption : Bool = true
+        @with_decryption : Bool = true,
       )
       end
 
@@ -70,10 +70,10 @@ module Awscr
 
       def to_json : String
         token = @next_token
-        String.build do |s|
-          s << %({"Name":#{@name.to_json},"MaxResults":#{@max_results},"WithDecryption":#{@with_decryption})
-          s << %("NextToken":#{token.to_json}) if token
-          s << "}"
+        String.build do |builder|
+          builder << %({"Name":#{@name.to_json},"MaxResults":#{@max_results},"WithDecryption":#{@with_decryption})
+          builder << %("NextToken":#{token.to_json}) if token
+          builder << "}"
         end
       end
     end
@@ -103,7 +103,7 @@ module Awscr
         @description : String,
         @allowed_pattern : String,
         @key_id : String,
-        @overwrite : Bool
+        @overwrite : Bool,
       )
       end
 
@@ -112,14 +112,14 @@ module Awscr
       end
 
       def to_json : String
-        String.build do |s|
-          s << %({"Name":#{@key.to_json},"Value":#{@value.to_json})
-          s << %("Type":#{@secure ? "\"SecureString\"" : "\"String\""})
-          s << %("Overwrite":#{@overwrite})
-          s << %("Description":#{@description.to_json}) unless @description.empty?
-          s << %("AllowedPattern":#{@allowed_pattern.to_json}) unless @allowed_pattern.empty?
-          s << %("KeyId":#{@key_id.to_json}) unless @key_id.empty?
-          s << "}"
+        String.build do |builder|
+          builder << %({"Name":#{@key.to_json},"Value":#{@value.to_json})
+          builder << %(,"Type":#{@secure ? "\"SecureString\"" : "\"String\""})
+          builder << %(,"Overwrite":#{@overwrite})
+          builder << %(,"Description":#{@description.to_json}) unless @description.empty?
+          builder << %(,"AllowedPattern":#{@allowed_pattern.to_json}) unless @allowed_pattern.empty?
+          builder << %(,"KeyId":#{@key_id.to_json}) unless @key_id.empty?
+          builder << "}"
         end
       end
     end

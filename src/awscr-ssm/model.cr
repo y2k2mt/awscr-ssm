@@ -11,7 +11,7 @@ module Awscr::SSM
       @selector : (String | Nil) = nil,
       @type : String = "",
       @value : String = "",
-      @version : Int64 = 0.to_i64
+      @version : Int64 = 0.to_i64,
     )
     end
   end
@@ -19,7 +19,7 @@ module Awscr::SSM
   alias ParameterHistoryResult = NamedTuple(parameters: Array(ParameterHistory), next_token: String?)
 
   struct ParameterHistory
-    getter allowed_pattern,description,key_id,labels,last_modified_user, last_modified_date, name, type, value, version
+    getter allowed_pattern, description, key_id, labels, last_modified_user, last_modified_date, name, type, value, version
 
     def initialize(
       @allowed_pattern : (String | Nil) = nil,
@@ -31,7 +31,7 @@ module Awscr::SSM
       @name : String = "",
       @type : String = "",
       @value : String = "",
-      @version : Int64 = 0.to_i64
+      @version : Int64 = 0.to_i64,
     )
     end
   end
