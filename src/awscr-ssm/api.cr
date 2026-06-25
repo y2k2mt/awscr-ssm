@@ -5,7 +5,7 @@ module Awscr
   module SSM
     class Api
       def initialize(@region : String, @credential_provider : Aws::Credentials::Provider = Awscr::SSM::Credentials.default_provider)
-        initialize(region, credential, "https://ssm.#{region}.amazonaws.com")
+        initialize(region, credential_prodiver, "https://ssm.#{region}.amazonaws.com")
       end
 
       def initialize(@region : String, @credential_provider : Aws::Credentials::Provider, @internal_uri : String)
