@@ -2,7 +2,7 @@ module Awscr
   module SSM
     class Client
       def initialize(@region : String, @credential_provider : Aws::Credentials::Providers = Awscr::SSM::Credentials.default_provider)
-        @api = Api.new(@region, @credential)
+        @api = Api.new(@region, @credential_provider)
       end
 
       def initialize(@region : String, url : String, @credential_provider : Aws::Credentials::Providers = Awscr::SSM::Credentials.default_provider)
